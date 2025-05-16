@@ -48,7 +48,7 @@ export default function ChatPage() {
         setConnectionError(null)
 
         // Create new WebSocket connection
-        const ws = new WebSocket("ws://trenches-chat-09c74c336a53.herokuapp.com/")
+        const ws = new WebSocket("wss://trenches-chat-09c74c336a53.herokuapp.com/")
         socketRef.current = ws
 
         ws.onopen = () => {
