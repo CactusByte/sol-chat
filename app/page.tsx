@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
+interface CustomWebSocket extends WebSocket {
+  reconnectAttempts?: number
+  permanentlyClosed?: boolean
+}
+
 interface Message {
   id: string
   sender: string
@@ -22,7 +27,7 @@ export default function ChatPage() {
   const [isConnected, setIsConnected] = useState(false)
   const [connectionError, setConnectionError] = useState<string | null>(null)
   const [isUsernameSet, setIsUsernameSet] = useState(false)
-  const socketRef = useRef<WebSocket | null>(null)
+  const socketRef = useRef<CustomWebSocket | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Connect to WebSocket
@@ -76,19 +81,22 @@ export default function ChatPage() {
           setIsConnected(false)
 
           // Check if we've already tried to connect multiple times
-          if (socketRef.current?.reconnectAttempts >= 2) {
+          if (socketRef.current?.reconnectAttempts && socketRef.current.reconnectAttempts >= 2) {
             setConnectionError("Unable to connect to the chat server at trenches-chat-09c74c336a53.herokuapp.com/. Using demo mode instead.")
             enableDemoMode()
           } else {
             setConnectionError("Failed to connect to the chat server at trenches-chat-09c74c336a53.herokuapp.com/. Retrying...")
             // Increment reconnect attempts
-            socketRef.current.reconnectAttempts = (socketRef.current.reconnectAttempts || 0) + 1
+            if (socketRef.current) {
+              socketRef.current.reconnectAttempts = (socketRef.current.reconnectAttempts || 0) + 1
+            }
           }
         }
 
         // Add custom properties to track connection state
-        ws.reconnectAttempts = 0
-        ws.permanentlyClosed = false
+        const customWs = ws as CustomWebSocket
+        customWs.reconnectAttempts = 0
+        customWs.permanentlyClosed = false
       } catch (error) {
         console.error("WebSocket connection error:", error)
         setConnectionError("Failed to connect to the chat server at trenches-chat-09c74c336a53.herokuapp.com/.")
@@ -112,8 +120,8 @@ export default function ChatPage() {
       }
 
       // Create a fake WebSocket for demo purposes
-      const fakeSocket = {} as WebSocket
-      fakeSocket.send = (data) => {
+      const fakeSocket = {} as CustomWebSocket
+      fakeSocket.send = (data: string) => {
         try {
           const message = JSON.parse(data)
           // Simulate receiving the message back
