@@ -7,9 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Old School Global Chat",
-  description: "A retro-styled global chat application",
-    generator: 'v0.dev'
+  title: "Trenches Chat",
+  description: "The OG trenches chat"
 }
 
 export default function RootLayout({

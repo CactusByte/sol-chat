@@ -235,7 +235,7 @@ export default function ChatPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-black p-4">
         <div className="w-full max-w-md rounded border border-green-500 bg-black p-6">
-          <h1 className="mb-6 font-mono text-2xl font-bold text-green-500">GLOBAL CHAT</h1>
+          <h1 className="mb-6 font-mono text-2xl font-bold text-green-500">Trenches Chat</h1>
           <form onSubmit={handleSetUsername} className="flex flex-col gap-4">
             <div className="font-mono text-green-500">Enter your username:</div>
             <Input
@@ -258,7 +258,7 @@ export default function ChatPage() {
   return (
     <div className="flex min-h-screen flex-col bg-black p-4">
       <header className="mb-4 flex items-center justify-between border-b border-green-500 pb-2">
-        <h1 className="font-mono text-xl font-bold text-green-500">GLOBAL CHAT</h1>
+        <h1 className="font-mono text-xl font-bold text-green-500">Trenches Chat</h1>
         <div className="flex items-center gap-2">
           <div className={`h-3 w-3 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
           <span className="font-mono text-sm text-green-500">{isConnected ? "CONNECTED" : "DISCONNECTED"}</span>
